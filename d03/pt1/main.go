@@ -38,7 +38,6 @@ func main() {
 
 	var sum int
 	for partNumber := range partNumbers {
-		fmt.Println("part: ", partNumber)
 		sum += partNumber.number
 	}
 	fmt.Println(sum)
