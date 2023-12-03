@@ -9,51 +9,47 @@ import (
 	"strings"
 )
 
-const (
-	redCap   = 12
-	greenCap = 13
-	blueCap  = 14
-)
-
 type Game struct {
 	id     int
 	rounds []map[string]int
 }
 
 func main() {
-	lines := linesFromPath("./adventofcode.com_2023_day_2_input.txt")
+	lines := linesFromPath("../pt1/adventofcode.com_2023_day_2_input.txt")
 	games := gamesFromLines(lines)
-	validGames := validGamesFromGames(games)
+	powers := powersFromGames(games)
 
-	var idSum int
-	for game := range validGames {
-		idSum += game.id
+	var sum int
+	for power := range powers {
+		sum += power
 	}
-	fmt.Println(idSum)
+	fmt.Println(sum)
 }
 
-func validGamesFromGames(games <-chan Game) <-chan Game {
-	validGames := make(chan Game)
+func powersFromGames(games <-chan Game) <-chan int {
+	powers := make(chan int)
 
 	go func() {
 		for game := range games {
-			valid := true
+			minRed, minGreen, minBlue := 0, 0, 0
 			for _, rd := range game.rounds {
-				if rd["red"] > redCap ||
-					rd["green"] > greenCap ||
-					rd["blue"] > blueCap {
-					valid = false
-					break
+				if red := rd["red"]; red > minRed {
+					minRed = red
+				}
+				if blue := rd["blue"]; blue > minBlue {
+					minBlue = blue
+				}
+				if green := rd["green"]; green > minGreen {
+					minGreen = green
 				}
 			}
-			if valid {
-				validGames <- game
-			}
+			powers <- minRed * minBlue * minGreen
 		}
-		close(validGames)
+
+		close(powers)
 	}()
 
-	return validGames
+	return powers
 }
 
 func gamesFromLines(lines <-chan string) <-chan Game {
