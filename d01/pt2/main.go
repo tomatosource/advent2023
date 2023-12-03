@@ -19,23 +19,23 @@ func main() {
 
 func do() error {
 	sum := 0
-	lowSet := false
-	var low, high int
+	leftSet := false
+	var left, right int
 
 	for d := range digits() {
 		if d == NL {
-			val := low*10 + high
+			val := left*10 + right
 			sum += val
-			lowSet = false
-			low = 0
-			high = 0
+			leftSet = false
+			left = 0
+			right = 0
 		} else {
-			if lowSet {
-				high = d
+			if leftSet {
+				right = d
 			} else {
-				low = d
-				high = d
-				lowSet = true
+				left = d
+				right = d
+				leftSet = true
 			}
 		}
 	}

@@ -23,8 +23,8 @@ func do() error {
 
 	br := bufio.NewReader(f)
 	sum := 0
-	lowSet := false
-	var low, high byte
+	leftSet := false
+	var left, right byte
 
 	for {
 		b, err := br.ReadByte()
@@ -38,16 +38,16 @@ func do() error {
 		case b >= ':':
 			continue
 		case b == '\n':
-			sum += int((low-'0')*10 + (high - '0'))
-			lowSet = false
+			sum += int((left-'0')*10 + (right - '0'))
+			leftSet = false
 			continue
 		default:
-			if lowSet {
-				high = b
+			if leftSet {
+				right = b
 			} else {
-				low = b
-				high = b
-				lowSet = true
+				left = b
+				right = b
+				leftSet = true
 			}
 			continue
 		}
