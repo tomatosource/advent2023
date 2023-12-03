@@ -35,13 +35,7 @@ func do() error {
 		}
 
 		switch true {
-		case b >= ':':
-			continue
-		case b == '\n':
-			sum += int((left-'0')*10 + (right - '0'))
-			leftSet = false
-			continue
-		default:
+		case b >= '0' && b <= '9':
 			if leftSet {
 				right = b
 			} else {
@@ -49,7 +43,12 @@ func do() error {
 				right = b
 				leftSet = true
 			}
-			continue
+			break
+
+		case b == '\n':
+			sum += int((left-'0')*10 + (right - '0'))
+			leftSet = false
+			break
 		}
 	}
 

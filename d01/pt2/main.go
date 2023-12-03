@@ -69,12 +69,12 @@ func digits() <-chan int {
 			case b >= '0' && b <= '9':
 				digits <- int(b - '0')
 				prefixes = []string{}
-				continue
+				break
 
 			case b == '\n':
 				digits <- NL
 				prefixes = []string{}
-				continue
+				break
 
 			default:
 				v := strings.ToLower(string(b))
